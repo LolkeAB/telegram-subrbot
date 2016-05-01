@@ -57,7 +57,7 @@ def inlinequery(bot, update):
 
         res.append(qwe)
 
-    bot.answerInlineQuery(update.inline_query.id, results=res, cache_time=1)
+    bot.answerInlineQuery(update.inline_query.id, results=res, cache_time=7200)
 
 def main():
     # Create the EventHandler and pass it your bot's token.
