@@ -4,8 +4,8 @@ from telegram.ext import Updater, InlineQueryHandler, CommandHandler
 from telegram import InlineQueryResultArticle, ParseMode, InputTextMessageContent
 import logging
 import praw
+import pdb
 from uuid import uuid4
-
 from config import *
 
 # Enable logging
@@ -45,13 +45,19 @@ def inlinequery(bot, update):
         qwe = InlineQueryResultArticle(
             id=uuid4(),
             title=sub.title,
-            input_message_content=InputTextMessageContent(sub.url))
+            input_message_content=InputTextMessageContent(sub.title + 
+                ' from /r/' + query + '\n' + sub.url))
+
         if hasattr(sub, 'preview'): 
             qwe.thumb_url = sub.preview['images'][0]['resolutions'][0]['url']
 
+        if hasattr(sub, 'secure_media'): 
+            if sub.secure_media != None:
+                qwe.thumb_url = sub.secure_media['oembed']['thumbnail_url']
+
         res.append(qwe)
 
-    bot.answerInlineQuery(update.inline_query.id, results=res, cache_time=7200)
+    bot.answerInlineQuery(update.inline_query.id, results=res, cache_time=1)
 
 def main():
     # Create the EventHandler and pass it your bot's token.
