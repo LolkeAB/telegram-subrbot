@@ -47,15 +47,17 @@ def inlinequery(bot, update):
             title=sub.title,
             input_message_content=InputTextMessageContent(sub.title + 
                 ' from /r/' + query + '\n' + sub.url))
+        thumbnail = ''
 
         if hasattr(sub, 'preview'): 
-            qwe.thumb_url = sub.preview['images'][0]['source']['url']
+            thumbnail = sub.preview['images'][0]['source']['url']
 
-        if qwe.thumb_url != None:
+        if thumbnail != '':
             if hasattr(sub, 'secure_media'): 
                 if sub.secure_media != None:
-                    qwe.thumb_url = sub.secure_media['oembed']['thumbnail_url']
+                    thumbnail = sub.secure_media['oembed']['thumbnail_url']
 
+        qwe.thumb_url = thumbnail
         res.append(qwe)
 
     bot.answerInlineQuery(update.inline_query.id, results=res, cache_time=7200)
