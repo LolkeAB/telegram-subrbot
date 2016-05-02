@@ -49,11 +49,12 @@ def inlinequery(bot, update):
                 ' from /r/' + query + '\n' + sub.url))
 
         if hasattr(sub, 'preview'): 
-            qwe.thumb_url = sub.preview['images'][0]['resolutions'][0]['url']
+            qwe.thumb_url = sub.preview['images'][0]['source']['url']
 
-        if hasattr(sub, 'secure_media'): 
-            if sub.secure_media != None:
-                qwe.thumb_url = sub.secure_media['oembed']['thumbnail_url']
+        if qwe.thumb_url != None:
+            if hasattr(sub, 'secure_media'): 
+                if sub.secure_media != None:
+                    qwe.thumb_url = sub.secure_media['oembed']['thumbnail_url']
 
         res.append(qwe)
 
