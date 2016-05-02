@@ -4,7 +4,7 @@ from telegram.ext import Updater, InlineQueryHandler, CommandHandler
 from telegram import InlineQueryResultArticle, ParseMode, InputTextMessageContent
 import logging
 import praw
-import pdb
+import html
 from uuid import uuid4
 from config import *
 
@@ -42,20 +42,25 @@ def inlinequery(bot, update):
     for sub in submissions:
         offset = sub.name
 
+        message = '<strong>{title}</strong> \n <a href="{url}">link</a> | <a href="https://www.reddit.com/r/{subreddit}">/r/{subreddit}</a> | <a href="https://www.reddit.com/{link}">permalink</a>'.format(title=html.escape(sub.title), url=html.escape(sub.url), subreddit=sub.subreddit, link=sub.permalink)
+
         qwe = InlineQueryResultArticle(
             id=uuid4(),
             title=sub.title,
-            input_message_content=InputTextMessageContent(sub.title + 
-                ' from /r/' + query + '\n' + sub.url))
+            input_message_content=InputTextMessageContent(message, parse_mode=ParseMode.HTML)
+            )
+
         thumbnail = ''
 
         if hasattr(sub, 'preview'): 
             thumbnail = sub.preview['images'][0]['source']['url']
-
-        if thumbnail != '':
-            if hasattr(sub, 'secure_media'): 
-                if sub.secure_media != None:
-                    thumbnail = sub.secure_media['oembed']['thumbnail_url']
+        
+        try:
+            if sub.secure_media != None:
+                thumbnail = sub.secure_media['oembed']['thumbnail_url']
+        except:
+            # jammer
+            pass
 
         qwe.thumb_url = thumbnail
         res.append(qwe)
