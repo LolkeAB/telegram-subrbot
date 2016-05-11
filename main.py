@@ -42,7 +42,7 @@ def inlinequery(bot, update):
     for sub in submissions:
         offset = sub.name
 
-        message = '<strong>{title}</strong> \n <a href="{url}">link</a> | <a href="https://www.reddit.com/r/{subreddit}">/r/{subreddit}</a> | <a href="https://www.reddit.com/{link}">permalink</a>'.format(title=html.escape(sub.title), url=html.escape(sub.url), subreddit=sub.subreddit, link=sub.permalink)
+        message = '<strong>{title}</strong> \n <a href="{url}">link</a> | <a href="https://www.reddit.com/r/{subreddit}">/r/{subreddit}</a> | <a href="{link}">permalink</a>'.format(title=html.escape(sub.title), url=html.escape(sub.url), subreddit=sub.subreddit, link=sub.permalink)
 
         qwe = InlineQueryResultArticle(
             id=uuid4(),
