@@ -7,6 +7,7 @@ import praw
 import html
 from uuid import uuid4
 from config import *
+import re
 
 # Enable logging
 logging.basicConfig(
@@ -41,8 +42,17 @@ def inlinequery(bot, update):
 
     for sub in submissions:
         offset = sub.name
+        link_url = sub.url
 
-        message = '<strong>{title}</strong> \n <a href="{url}">link</a> | <a href="https://www.reddit.com/r/{subreddit}">/r/{subreddit}</a> | <a href="https://www.reddit.com/{link}">permalink</a>'.format(title=html.escape(sub.title), url=html.escape(sub.url), subreddit=sub.subreddit, link=sub.permalink)
+        try:
+            if 'imgur' in sub.url:
+                m = re.search('imgur.com\/(\w*)', sub.url)
+                link_url = 'https://i.imgur.com/' + m.group(1) + '.jpg'
+        except:
+            # voor het geval dat
+            pass
+
+        message = '<strong>{title}</strong> \n <a href="{url}">link</a> | <a href="https://www.reddit.com/r/{subreddit}">/r/{subreddit}</a> | <a href="https://www.reddit.com/{link}">permalink</a>'.format(title=html.escape(sub.title), url=html.escape(link_url), subreddit=sub.subreddit, link=sub.permalink)
 
         qwe = InlineQueryResultArticle(
             id=uuid4(),
@@ -65,7 +75,7 @@ def inlinequery(bot, update):
         qwe.thumb_url = thumbnail
         res.append(qwe)
 
-    bot.answerInlineQuery(update.inline_query.id, results=res, cache_time=7200)
+    bot.answerInlineQuery(update.inline_query.id, results=res, cache_time=CACHE_TIME)
 
 def main():
     # Create the EventHandler and pass it your bot's token.
