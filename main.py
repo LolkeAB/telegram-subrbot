@@ -46,8 +46,10 @@ def inlinequery(bot, update):
 
         try:
             if 'imgur' in sub.url:
-                m = re.search('imgur.com\/(\w*)', sub.url)
-                link_url = 'https://i.imgur.com/' + m.group(1) + '.jpg'
+                m = re.search('imgur\.com\/(\w*)', sub.url)
+                # geen albums (imgur.com/a/)
+                if len(m.group(1) > 2):
+                    link_url = 'https://i.imgur.com/' + m.group(1) + '.jpg'
         except:
             # voor het geval dat
             pass
