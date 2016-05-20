@@ -52,7 +52,7 @@ def inlinequery(bot, update):
             # voor het geval dat
             pass
 
-        message = '<strong>{title}</strong> \n <a href="{url}">link</a> | <a href="https://www.reddit.com/r/{subreddit}">/r/{subreddit}</a> | <a href="https://www.reddit.com/{link}">permalink</a>'.format(title=html.escape(sub.title), url=html.escape(link_url), subreddit=sub.subreddit, link=sub.permalink)
+        message = '<strong>{title}</strong> \n <a href="{url}">link</a> | <a href="https://www.reddit.com/r/{subreddit}">/r/{subreddit}</a> | <a href="{link}">permalink</a>'.format(title=html.escape(sub.title), url=html.escape(link_url), subreddit=sub.subreddit, link=sub.permalink)
 
         qwe = InlineQueryResultArticle(
             id=uuid4(),
